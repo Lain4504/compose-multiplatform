@@ -42,7 +42,7 @@ fun TodoListScreen() {
                 onClick = { showAddDialog = true },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Todo")
+                Icon(Icons.Filled.Add, contentDescription = "Add Todo")
             }
         }
         
@@ -186,7 +186,7 @@ fun TodoItemCard(
                 )
                 IconButton(onClick = onDelete) {
                     Icon(
-                        Icons.Default.Delete,
+                        Icons.Filled.Delete,
                         contentDescription = "Delete",
                         tint = MaterialTheme.colorScheme.error
                     )

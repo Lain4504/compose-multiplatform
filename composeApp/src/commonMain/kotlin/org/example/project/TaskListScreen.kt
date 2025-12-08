@@ -11,10 +11,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.collectAsState
 import org.example.project.api.ApiConfig
 import org.example.project.api.TaskApiImpl
 import org.example.project.api.createHttpClient
@@ -54,7 +54,9 @@ fun TaskListScreen() {
                 style = MaterialTheme.typography.headlineSmall
             )
             
-            Row(spacing = 8.dp) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 IconButton(
                     onClick = {
                         scope.launch {
@@ -64,7 +66,7 @@ fun TaskListScreen() {
                     enabled = !isLoading
                 ) {
                     Icon(
-                        Icons.Default.Refresh,
+                        Icons.Filled.Refresh,
                         contentDescription = "Refresh",
                         modifier = Modifier.then(
                             if (isLoading) Modifier.rotate(360f) else Modifier
@@ -76,7 +78,7 @@ fun TaskListScreen() {
                     onClick = { showAddDialog = true },
                     containerColor = MaterialTheme.colorScheme.primary
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add Task")
+                    Icon(Icons.Filled.Add, contentDescription = "Add Task")
                 }
             }
         }
@@ -212,7 +214,7 @@ fun TaskItemCard(
                 )
                 IconButton(onClick = onDelete) {
                     Icon(
-                        Icons.Default.Delete,
+                        Icons.Filled.Delete,
                         contentDescription = "Delete",
                         tint = MaterialTheme.colorScheme.error
                     )

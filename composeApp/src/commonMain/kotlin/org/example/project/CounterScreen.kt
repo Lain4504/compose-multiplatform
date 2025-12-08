@@ -64,7 +64,7 @@ fun CounterScreen() {
                             containerColor = MaterialTheme.colorScheme.error
                         )
                     ) {
-                        Icon(Icons.Default.Remove, contentDescription = "Decrement")
+                        Icon(Icons.Filled.Remove, contentDescription = "Decrement")
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Decrement")
                     }
@@ -78,7 +78,7 @@ fun CounterScreen() {
                             containerColor = MaterialTheme.colorScheme.secondary
                         )
                     ) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Reset")
+                        Icon(Icons.Filled.Refresh, contentDescription = "Reset")
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Reset")
                     }
@@ -92,7 +92,7 @@ fun CounterScreen() {
                             containerColor = MaterialTheme.colorScheme.primary
                         )
                     ) {
-                        Icon(Icons.Default.Add, contentDescription = "Increment")
+                        Icon(Icons.Filled.Add, contentDescription = "Increment")
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Increment")
                     }

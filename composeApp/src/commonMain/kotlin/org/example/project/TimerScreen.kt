@@ -101,7 +101,7 @@ fun TimerScreen() {
                         )
                     ) {
                         Icon(
-                            if (isRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
+                            if (isRunning) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                             contentDescription = if (isRunning) "Pause" else "Start"
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -120,7 +120,7 @@ fun TimerScreen() {
                             containerColor = MaterialTheme.colorScheme.error
                         )
                     ) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Reset")
+                        Icon(Icons.Filled.Refresh, contentDescription = "Reset")
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Reset")
                     }

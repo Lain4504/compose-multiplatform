@@ -66,7 +66,7 @@ fun NotesScreen() {
                 onClick = { showAddDialog = true },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Note")
+                Icon(Icons.Filled.Add, contentDescription = "Add Note")
             }
         }
         
@@ -77,7 +77,7 @@ fun NotesScreen() {
             onValueChange = { searchQuery = it },
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Search notes...") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
             singleLine = true
         )
         
@@ -239,14 +239,14 @@ fun NoteCard(
             ) {
                 IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
                     Icon(
-                        Icons.Default.Edit,
+                        Icons.Filled.Edit,
                         contentDescription = "Edit",
                         modifier = Modifier.size(18.dp)
                     )
                 }
                 IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                     Icon(
-                        Icons.Default.Delete,
+                        Icons.Filled.Delete,
                         contentDescription = "Delete",
                         tint = MaterialTheme.colorScheme.error,
                         modifier = Modifier.size(18.dp)

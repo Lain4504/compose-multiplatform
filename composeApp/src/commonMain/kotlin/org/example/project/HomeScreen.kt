@@ -1,7 +1,6 @@
 package org.example.project
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -9,11 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
-import dontshareui.composeapp.generated.resources.Res
-import dontshareui.composeapp.generated.resources.compose_multiplatform
 
 @Composable
 @Preview
@@ -62,11 +57,12 @@ fun HomeScreen() {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        Image(
-                            painter = painterResource(Res.drawable.compose_multiplatform),
-                            contentDescription = null,
-                            modifier = Modifier.size(200.dp)
-                        )
+                        // Image resource temporarily commented out
+                        // Image(
+                        //     painter = painterResource(Res.drawable.compose_multiplatform),
+                        //     contentDescription = null,
+                        //     modifier = Modifier.size(200.dp)
+                        // )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "Compose: $greeting",
