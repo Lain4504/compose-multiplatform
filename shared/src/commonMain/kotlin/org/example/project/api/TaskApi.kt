@@ -30,6 +30,7 @@ class TaskApiImpl(
     override suspend fun getAllTasks(): List<TaskDto> {
         val response = httpClient.get("$baseUrl$TASKS_ENDPOINT") {
             contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
         }
         return response.body<TaskListResponse>().tasks
     }
@@ -38,6 +39,7 @@ class TaskApiImpl(
         return try {
             val response = httpClient.get("$baseUrl$TASKS_ENDPOINT/$id") {
                 contentType(ContentType.Application.Json)
+                accept(ContentType.Application.Json)
             }
             response.body<TaskResponse>().task
         } catch (e: Exception) {
@@ -48,6 +50,7 @@ class TaskApiImpl(
     override suspend fun createTask(task: TaskDto): TaskDto {
         val response = httpClient.post("$baseUrl$TASKS_ENDPOINT") {
             contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
             setBody(task)
         }
         return response.body<TaskResponse>().task
@@ -57,6 +60,7 @@ class TaskApiImpl(
         return try {
             val response = httpClient.put("$baseUrl$TASKS_ENDPOINT/$id") {
                 contentType(ContentType.Application.Json)
+                accept(ContentType.Application.Json)
                 setBody(task)
             }
             response.body<TaskResponse>().task

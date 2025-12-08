@@ -5,29 +5,10 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
+import org.example.project.api.*
 import java.util.*
 
-@Serializable
-data class TaskDto(
-    val id: String? = null,
-    val title: String,
-    val description: String = "",
-    val isCompleted: Boolean = false,
-    val createdAt: Long? = null
-)
-
-@Serializable
-data class TaskListResponse(
-    val tasks: List<TaskDto>
-)
-
-@Serializable
-data class TaskResponse(
-    val task: TaskDto
-)
-
-@Serializable
+@kotlinx.serialization.Serializable
 data class ErrorResponse(
     val error: String,
     val message: String

@@ -2,19 +2,48 @@ import { useState } from 'react';
 import { NotesManager, Note } from 'shared';
 import './Notes.css';
 
+// Helper function to convert Kotlin List to JavaScript Array
+function toArray<T>(list: any): T[] {
+  if (Array.isArray(list)) {
+    return list;
+  }
+  // Try Array.from first (works for iterables)
+  try {
+    return Array.from(list as any) as T[];
+  } catch {
+    // Fallback: convert manually if needed
+    const result: T[] = [];
+    if (list) {
+      // Try to iterate if it's iterable
+      try {
+        for (const item of list as any) {
+          result.push(item);
+        }
+      } catch {
+        // If all else fails, return empty array
+      }
+    }
+    return result;
+  }
+}
+
 export function Notes() {
   const [notesManager] = useState(() => new NotesManager());
-  const [notes, setNotes] = useState<Note[]>(notesManager.getAllNotes());
+  const [notes, setNotes] = useState<Note[]>(() => {
+    const result = notesManager.getAllNotes();
+    return toArray<Note>(result);
+  });
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
 
   const refreshNotes = () => {
-    setNotes(notesManager.getAllNotes());
+    const result = notesManager.getAllNotes();
+    setNotes(toArray<Note>(result));
   };
 
   const displayedNotes = searchQuery.trim()
-    ? notesManager.searchNotes(searchQuery)
+    ? toArray<Note>(notesManager.searchNotes(searchQuery))
     : notes;
 
   const handleAdd = (title: string, content: string, color: string) => {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createTaskApiJs, ApiConfig, createHttpClient, TaskDto } from 'shared';
+import { createTaskApiJs, getApiBaseUrl, createHttpClient, TaskDto } from 'shared';
 import './TaskList.css';
 
 let taskApiJs: any = null;
@@ -7,7 +7,8 @@ let taskApiJs: any = null;
 function getTaskApi() {
   if (!taskApiJs) {
     const httpClient = createHttpClient();
-    taskApiJs = createTaskApiJs(ApiConfig.baseUrl, httpClient);
+    const baseUrl = getApiBaseUrl();
+    taskApiJs = createTaskApiJs(baseUrl, httpClient);
   }
   return taskApiJs;
 }
@@ -41,11 +42,13 @@ export function TaskList() {
     setIsLoading(true);
     setError(null);
     try {
-      const newTask: TaskDto = {
+      const newTask = {
+        id: null,
         title: title,
         description: description,
         isCompleted: false,
-      };
+        createdAt: null,
+      } as TaskDto;
       await taskApi.createTask(newTask);
       setShowAddDialog(false);
       await loadTasks(); // Reload tasks
@@ -62,10 +65,13 @@ export function TaskList() {
     try {
       const task = tasks.find((t) => t.id === id);
       if (task) {
-        const updatedTask: TaskDto = {
-          ...task,
+        const updatedTask = {
+          id: task.id,
+          title: task.title,
+          description: task.description,
           isCompleted: !task.isCompleted,
-        };
+          createdAt: task.createdAt,
+        } as TaskDto;
         await taskApi.updateTask(id, updatedTask);
         await loadTasks(); // Reload tasks
       }

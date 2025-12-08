@@ -4,13 +4,19 @@ import './TodoList.css';
 
 export function TodoList() {
   const [todoManager] = useState(() => new TodoManager());
-  const [todos, setTodos] = useState<TodoItem[]>(todoManager.getAllTodos());
+  const [todos, setTodos] = useState<TodoItem[]>(() => {
+    const result = todoManager.getAllTodos();
+    // Convert Kotlin List to JavaScript Array
+    return Array.isArray(result) ? result : Array.from(result as any);
+  });
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const [newTodoDescription, setNewTodoDescription] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
 
   const refreshTodos = () => {
-    setTodos(todoManager.getAllTodos());
+    const result = todoManager.getAllTodos();
+    // Convert Kotlin List to JavaScript Array
+    setTodos(Array.isArray(result) ? result : Array.from(result as any));
   };
 
   const handleAdd = () => {
