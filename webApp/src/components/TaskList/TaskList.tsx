@@ -1,82 +1,91 @@
 import { useState, useEffect } from 'react';
-import { TaskRepositoryHelper, TaskApiImpl, ApiConfig, createHttpClient } from 'shared';
+import { createTaskApiJs, ApiConfig, createHttpClient, TaskDto } from 'shared';
 import './TaskList.css';
 
-let repositoryHelper: TaskRepositoryHelper | null = null;
+let taskApiJs: any = null;
 
-function getRepository(): TaskRepositoryHelper {
-  if (!repositoryHelper) {
+function getTaskApi() {
+  if (!taskApiJs) {
     const httpClient = createHttpClient();
-    const taskApi = new TaskApiImpl(ApiConfig.baseUrl, httpClient);
-    const repository = new TaskRepositoryImpl(taskApi);
-    repositoryHelper = new TaskRepositoryHelper(repository);
+    taskApiJs = createTaskApiJs(ApiConfig.baseUrl, httpClient);
   }
-  return repositoryHelper;
+  return taskApiJs;
 }
 
 export function TaskList() {
-  const [tasks, setTasks] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<TaskDto[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showAddDialog, setShowAddDialog] = useState(false);
 
-  const repository = getRepository();
+  const taskApi = getTaskApi();
 
   useEffect(() => {
     loadTasks();
-    
-    // Subscribe to tasks updates
-    const subscription = repository.getTasksFlow().subscribe((newTasks: any[]) => {
-      setTasks(newTasks);
-    });
-    
-    // Subscribe to loading state
-    const loadingSubscription = repository.getLoadingFlow().subscribe((loading: boolean) => {
-      setIsLoading(loading);
-    });
-    
-    // Subscribe to errors
-    const errorSubscription = repository.getErrorFlow().subscribe((err: string | null) => {
-      setError(err);
-    });
-    
-    return () => {
-      subscription.cancel();
-      loadingSubscription.cancel();
-      errorSubscription.cancel();
-    };
   }, []);
 
   const loadTasks = async () => {
+    setIsLoading(true);
+    setError(null);
     try {
-      await repository.loadTasks();
+      const result = await taskApi.getAllTasks();
+      setTasks(Array.from(result));
     } catch (e: any) {
       setError(e.message || 'Failed to load tasks');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleAdd = async (title: string, description: string) => {
+    setIsLoading(true);
+    setError(null);
     try {
-      await repository.createTask(title, description);
+      const newTask: TaskDto = {
+        title: title,
+        description: description,
+        isCompleted: false,
+      };
+      await taskApi.createTask(newTask);
       setShowAddDialog(false);
+      await loadTasks(); // Reload tasks
     } catch (e: any) {
       setError(e.message || 'Failed to create task');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleToggle = async (id: string) => {
+    setIsLoading(true);
+    setError(null);
     try {
-      await repository.toggleTask(id);
+      const task = tasks.find((t) => t.id === id);
+      if (task) {
+        const updatedTask: TaskDto = {
+          ...task,
+          isCompleted: !task.isCompleted,
+        };
+        await taskApi.updateTask(id, updatedTask);
+        await loadTasks(); // Reload tasks
+      }
     } catch (e: any) {
       setError(e.message || 'Failed to toggle task');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDelete = async (id: string) => {
+    setIsLoading(true);
+    setError(null);
     try {
-      await repository.deleteTask(id);
+      await taskApi.deleteTask(id);
+      await loadTasks(); // Reload tasks
     } catch (e: any) {
       setError(e.message || 'Failed to delete task');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -125,7 +134,7 @@ export function TaskList() {
                 <input
                   type="checkbox"
                   checked={task.isCompleted}
-                  onChange={() => handleToggle(task.id)}
+                  onChange={() => handleToggle(task.id || '')}
                   className="task-checkbox"
                 />
                 <div className="task-text">
@@ -143,7 +152,7 @@ export function TaskList() {
               </div>
               <button
                 className="task-delete"
-                onClick={() => handleDelete(task.id)}
+                onClick={() => handleDelete(task.id || '')}
                 aria-label="Delete task"
               >
                 ×
@@ -210,4 +219,3 @@ function TaskDialog({ onClose, onSave }: TaskDialogProps) {
     </div>
   );
 }
-

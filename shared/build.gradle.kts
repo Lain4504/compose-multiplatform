@@ -41,6 +41,8 @@ kotlin {
             implementation("io.ktor:ktor-client-core:${libs.versions.ktor.get()}")
             implementation("io.ktor:ktor-client-content-negotiation:${libs.versions.ktor.get()}")
             implementation("io.ktor:ktor-serialization-kotlinx-json:${libs.versions.ktor.get()}")
+            // Coroutines
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
         }
         androidMain.dependencies {
             implementation("io.ktor:ktor-client-android:${libs.versions.ktor.get()}")
