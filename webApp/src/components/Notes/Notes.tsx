@@ -4,27 +4,44 @@ import './Notes.css';
 
 // Helper function to convert Kotlin List to JavaScript Array
 function toArray<T>(list: any): T[] {
+  if (!list) {
+    return [];
+  }
   if (Array.isArray(list)) {
     return list;
   }
   // Try Array.from first (works for iterables)
   try {
-    return Array.from(list as any) as T[];
-  } catch {
-    // Fallback: convert manually if needed
-    const result: T[] = [];
-    if (list) {
-      // Try to iterate if it's iterable
-      try {
+    const array = Array.from(list as any) as T[];
+    return array;
+  } catch (e) {
+    console.warn('Array.from failed, trying manual conversion:', e);
+  }
+  // Fallback: convert manually if needed
+  const result: T[] = [];
+  if (list) {
+    // Try to iterate if it's iterable
+    try {
+      // Check if it has size property (Kotlin List)
+      if (typeof (list as any).size === 'number') {
+        const size = (list as any).size;
+        for (let i = 0; i < size; i++) {
+          const item = (list as any).get(i);
+          if (item) {
+            result.push(item);
+          }
+        }
+      } else {
+        // Try for...of
         for (const item of list as any) {
           result.push(item);
         }
-      } catch {
-        // If all else fails, return empty array
       }
+    } catch (e) {
+      console.warn('Manual conversion failed:', e);
     }
-    return result;
   }
+  return result;
 }
 
 export function Notes() {
@@ -38,8 +55,14 @@ export function Notes() {
   const [editingNote, setEditingNote] = useState<Note | null>(null);
 
   const refreshNotes = () => {
-    const result = notesManager.getAllNotes();
-    setNotes(toArray<Note>(result));
+    try {
+      const result = notesManager.getAllNotes();
+      const notesArray = toArray<Note>(result);
+      console.log('Refreshing notes, count:', notesArray.length);
+      setNotes(notesArray);
+    } catch (error) {
+      console.error('Error refreshing notes:', error);
+    }
   };
 
   const displayedNotes = searchQuery.trim()
@@ -48,14 +71,41 @@ export function Notes() {
 
   const handleAdd = (title: string, content: string, color: string) => {
     if (title.trim()) {
-      if (editingNote) {
-        notesManager.updateNote(editingNote.id, title, content, color);
-      } else {
-        notesManager.addNote(title, content, color);
+      try {
+        if (editingNote) {
+          const updated = notesManager.updateNote(editingNote.id, title, content, color);
+          console.log('Updated note:', updated);
+          if (updated) {
+            // Update the note in state directly
+            setNotes(prevNotes => {
+              const updatedNotes = prevNotes.map(note => 
+                note.id === editingNote.id ? updated : note
+              );
+              return updatedNotes.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+            });
+          } else {
+            refreshNotes();
+          }
+        } else {
+          const added = notesManager.addNote(title, content, color);
+          console.log('Added note:', added);
+          if (added) {
+            // Add the note to state directly
+            setNotes(prevNotes => {
+              const newNotes = [...prevNotes, added];
+              return newNotes.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+            });
+          } else {
+            refreshNotes();
+          }
+        }
+        setShowAddDialog(false);
+        setEditingNote(null);
+      } catch (error) {
+        console.error('Error adding/updating note:', error);
+        // Still refresh even on error to show current state
+        refreshNotes();
       }
-      refreshNotes();
-      setShowAddDialog(false);
-      setEditingNote(null);
     }
   };
 

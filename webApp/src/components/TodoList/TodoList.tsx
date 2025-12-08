@@ -14,18 +14,36 @@ export function TodoList() {
   const [showAddDialog, setShowAddDialog] = useState(false);
 
   const refreshTodos = () => {
-    const result = todoManager.getAllTodos();
-    // Convert Kotlin List to JavaScript Array
-    setTodos(Array.isArray(result) ? result : Array.from(result as any));
+    try {
+      const result = todoManager.getAllTodos();
+      // Convert Kotlin List to JavaScript Array
+      const todosArray = Array.isArray(result) ? result : Array.from(result as any);
+      console.log('Refreshing todos, count:', todosArray.length);
+      setTodos(todosArray);
+    } catch (error) {
+      console.error('Error refreshing todos:', error);
+    }
   };
 
   const handleAdd = () => {
     if (newTodoTitle.trim()) {
-      todoManager.addTodo(newTodoTitle, newTodoDescription);
-      setNewTodoTitle('');
-      setNewTodoDescription('');
-      setShowAddDialog(false);
-      refreshTodos();
+      try {
+        const added = todoManager.addTodo(newTodoTitle, newTodoDescription);
+        console.log('Added todo:', added);
+        if (added) {
+          // Add the todo to state directly
+          setTodos(prevTodos => [...prevTodos, added]);
+        } else {
+          refreshTodos();
+        }
+        setNewTodoTitle('');
+        setNewTodoDescription('');
+        setShowAddDialog(false);
+      } catch (error) {
+        console.error('Error adding todo:', error);
+        // Still refresh even on error to show current state
+        refreshTodos();
+      }
     }
   };
 
