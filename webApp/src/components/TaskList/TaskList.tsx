@@ -39,20 +39,29 @@ export function TaskList() {
   };
 
   const handleAdd = async (title: string, description: string) => {
+    console.log('handleAdd called with:', { title, description });
     setIsLoading(true);
     setError(null);
     try {
-      const newTask = {
-        id: null,
-        title: title,
-        description: description,
+      // Create task with only required fields (id and createdAt will be set by server)
+      const newTask: TaskDto = {
+        title: title.trim(),
+        description: description.trim(),
         isCompleted: false,
-        createdAt: null,
-      } as TaskDto;
-      await taskApi.createTask(newTask);
+      };
+      console.log('Creating task:', JSON.stringify(newTask));
+      console.log('TaskApi instance:', taskApi);
+      const result = await taskApi.createTask(newTask);
+      console.log('Task created successfully:', result);
       setShowAddDialog(false);
       await loadTasks(); // Reload tasks
     } catch (e: any) {
+      console.error('Failed to create task:', e);
+      console.error('Error details:', {
+        message: e.message,
+        stack: e.stack,
+        name: e.name,
+      });
       setError(e.message || 'Failed to create task');
     } finally {
       setIsLoading(false);
@@ -187,6 +196,24 @@ function TaskDialog({ onClose, onSave }: TaskDialogProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
+  const handleSave = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Save button clicked, title:', title);
+    if (title.trim()) {
+      console.log('Calling onSave');
+      onSave(title.trim(), description);
+    } else {
+      console.log('Title is empty, not saving');
+    }
+  };
+
+  const handleCancel = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClose();
+  };
+
   return (
     <div className="dialog-overlay" onClick={onClose}>
       <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
@@ -198,6 +225,12 @@ function TaskDialog({ onClose, onSave }: TaskDialogProps) {
           onChange={(e) => setTitle(e.target.value)}
           className="dialog-input"
           autoFocus
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && title.trim()) {
+              e.preventDefault();
+              onSave(title.trim(), description);
+            }
+          }}
         />
         <textarea
           placeholder="Description (optional)"
@@ -207,16 +240,18 @@ function TaskDialog({ onClose, onSave }: TaskDialogProps) {
           rows={3}
         />
         <div className="dialog-buttons">
-          <button className="dialog-btn cancel" onClick={onClose}>
+          <button 
+            type="button"
+            className="dialog-btn cancel" 
+            onClick={handleCancel}
+          >
             Cancel
           </button>
           <button
+            type="button"
             className="dialog-btn confirm"
-            onClick={() => {
-              if (title.trim()) {
-                onSave(title, description);
-              }
-            }}
+            onClick={handleSave}
+            disabled={!title.trim()}
           >
             Add
           </button>

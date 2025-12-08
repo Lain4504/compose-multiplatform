@@ -27,15 +27,38 @@ class TaskApiJs(
         }
     }
     
-    fun createTask(task: TaskDto): Promise<TaskDto> {
+    fun createTask(task: Any): Promise<TaskDto> {
         return GlobalScope.promise {
-            taskApi.createTask(task)
+            try {
+                // Convert JavaScript object to TaskDto
+                val taskObj = task.asDynamic()
+                val taskDto = TaskDto(
+                    id = taskObj.id as? String,
+                    title = taskObj.title as String,
+                    description = (taskObj.description as? String) ?: "",
+                    isCompleted = (taskObj.isCompleted as? Boolean) ?: false,
+                    createdAt = taskObj.createdAt as? Long
+                )
+                taskApi.createTask(taskDto)
+            } catch (e: Throwable) {
+                console.error("Error creating task:", e)
+                throw e
+            }
         }
     }
     
-    fun updateTask(id: String, task: TaskDto): Promise<TaskDto?> {
+    fun updateTask(id: String, task: Any): Promise<TaskDto?> {
         return GlobalScope.promise {
-            taskApi.updateTask(id, task)
+            // Convert JavaScript object to TaskDto
+            val taskObj = task.asDynamic()
+            val taskDto = TaskDto(
+                id = taskObj.id as? String,
+                title = taskObj.title as String,
+                description = (taskObj.description as? String) ?: "",
+                isCompleted = (taskObj.isCompleted as? Boolean) ?: false,
+                createdAt = taskObj.createdAt as? Long
+            )
+            taskApi.updateTask(id, taskDto)
         }
     }
     
