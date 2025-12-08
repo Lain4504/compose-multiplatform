@@ -6,6 +6,8 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import kotlinx.serialization.json.Json
 
 interface TaskApi {
