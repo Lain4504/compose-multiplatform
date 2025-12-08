@@ -13,11 +13,11 @@ class Timer {
     
     fun start() {
         if (!isRunning && !isPaused) {
-            startTime = System.currentTimeMillis()
+            startTime = currentTimeMillis()
             isRunning = true
         } else if (isPaused) {
             // Resume from paused time
-            startTime = System.currentTimeMillis() - pausedTime
+            startTime = currentTimeMillis() - pausedTime
             isPaused = false
             isRunning = true
         }
@@ -40,7 +40,7 @@ class Timer {
     
     fun getElapsedTime(): Long {
         return if (isRunning) {
-            System.currentTimeMillis() - startTime
+            currentTimeMillis() - startTime
         } else if (isPaused) {
             pausedTime
         } else {

@@ -9,10 +9,29 @@ data class Note(
     val id: String,
     val title: String,
     val content: String,
-    val createdAt: Long = System.currentTimeMillis(),
-    val updatedAt: Long = System.currentTimeMillis(),
+    val createdAt: Long = 0L,
+    val updatedAt: Long = 0L,
     val color: String = "#FFFFFF"
-)
+) {
+    companion object {
+        fun create(
+            id: String,
+            title: String,
+            content: String,
+            color: String = "#FFFFFF"
+        ): Note {
+            val now = currentTimeMillis()
+            return Note(
+                id = id,
+                title = title,
+                content = content,
+                createdAt = now,
+                updatedAt = now,
+                color = color
+            )
+        }
+    }
+}
 
 @OptIn(ExperimentalJsExport::class)
 @JsExport
@@ -20,8 +39,8 @@ class NotesManager {
     private val notes = mutableListOf<Note>()
     
     fun addNote(title: String, content: String, color: String = "#FFFFFF"): Note {
-        val note = Note(
-            id = "${System.currentTimeMillis()}-${notes.size}",
+        val note = Note.create(
+            id = "${currentTimeMillis()}-${notes.size}",
             title = title,
             content = content,
             color = color
@@ -31,14 +50,14 @@ class NotesManager {
     }
     
     fun updateNote(id: String, title: String, content: String, color: String? = null): Note? {
-        val index = notes.indexOfFirst { it.id == id }
+        val index = notes.indexOfFirst { note -> note.id == id }
         return if (index != -1) {
             val existing = notes[index]
             val updated = existing.copy(
                 title = title,
                 content = content,
                 color = color ?: existing.color,
-                updatedAt = System.currentTimeMillis()
+                updatedAt = currentTimeMillis()
             )
             notes[index] = updated
             updated
@@ -48,7 +67,7 @@ class NotesManager {
     }
     
     fun deleteNote(id: String): Boolean {
-        return notes.removeIf { it.id == id }
+        return notes.removeIf { note -> note.id == id }
     }
     
     fun getNote(id: String): Note? {

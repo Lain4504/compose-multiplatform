@@ -10,8 +10,25 @@ data class TodoItem(
     val title: String,
     val description: String = "",
     val isCompleted: Boolean = false,
-    val createdAt: Long = System.currentTimeMillis()
-)
+    val createdAt: Long = 0L
+) {
+    companion object {
+        fun create(
+            id: String,
+            title: String,
+            description: String = "",
+            isCompleted: Boolean = false
+        ): TodoItem {
+            return TodoItem(
+                id = id,
+                title = title,
+                description = description,
+                isCompleted = isCompleted,
+                createdAt = currentTimeMillis()
+            )
+        }
+    }
+}
 
 @OptIn(ExperimentalJsExport::class)
 @JsExport
@@ -19,8 +36,8 @@ class TodoManager {
     private val todos = mutableListOf<TodoItem>()
     
     fun addTodo(title: String, description: String = ""): TodoItem {
-        val todo = TodoItem(
-            id = "${System.currentTimeMillis()}-${todos.size}",
+        val todo = TodoItem.create(
+            id = "${currentTimeMillis()}-${todos.size}",
             title = title,
             description = description
         )
@@ -29,7 +46,7 @@ class TodoManager {
     }
     
     fun removeTodo(id: String): Boolean {
-        return todos.removeIf { it.id == id }
+        return todos.removeIf { todo -> todo.id == id }
     }
     
     fun toggleTodo(id: String): TodoItem? {

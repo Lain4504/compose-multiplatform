@@ -5,9 +5,10 @@ import { Calculator } from './components/Calculator/Calculator';
 import { TodoList } from './components/TodoList/TodoList';
 import { Timer } from './components/Timer/Timer';
 import { Notes } from './components/Notes/Notes';
+import { TaskList } from './components/TaskList/TaskList';
 import './App.css';
 
-type Screen = 'home' | 'counter' | 'calculator' | 'todolist' | 'timer' | 'notes';
+type Screen = 'home' | 'counter' | 'calculator' | 'todolist' | 'timer' | 'notes' | 'tasks';
 
 export function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
@@ -19,6 +20,7 @@ export function App() {
     { id: 'todolist' as Screen, label: 'Todos', icon: '✅' },
     { id: 'timer' as Screen, label: 'Timer', icon: '⏱️' },
     { id: 'notes' as Screen, label: 'Notes', icon: '📝' },
+    { id: 'tasks' as Screen, label: 'Tasks', icon: '📋' },
   ];
 
   return (
@@ -53,6 +55,7 @@ export function App() {
                 <li>✅ Todo List - Task management</li>
                 <li>⏱️ Timer/Stopwatch - Time tracking</li>
                 <li>📝 Notes - Colorful note taking</li>
+                <li>📋 Tasks - CRUD API with server</li>
                 <li>💻 Shared business logic across platforms</li>
               </ul>
             </div>
@@ -63,6 +66,7 @@ export function App() {
         {currentScreen === 'todolist' && <TodoList />}
         {currentScreen === 'timer' && <Timer />}
         {currentScreen === 'notes' && <Notes />}
+        {currentScreen === 'tasks' && <TaskList />}
       </main>
     </div>
   );

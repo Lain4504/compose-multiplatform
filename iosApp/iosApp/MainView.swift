@@ -52,6 +52,14 @@ struct MainView: View {
                 Label("Notes", systemImage: "note.text")
             }
             .tag(5)
+            
+            NavigationStack {
+                TaskListView()
+            }
+            .tabItem {
+                Label("Tasks", systemImage: "list.bullet.clipboard")
+            }
+            .tag(6)
         }
     }
 }
