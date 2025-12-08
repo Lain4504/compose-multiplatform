@@ -56,6 +56,18 @@ fun App() {
                         icon = { Text("🧮") },
                         label = { Text("Calc") }
                     )
+                    NavigationBarItem(
+                        selected = currentScreen == Screen.Timer,
+                        onClick = { currentScreen = Screen.Timer },
+                        icon = { Text("⏱️") },
+                        label = { Text("Timer") }
+                    )
+                    NavigationBarItem(
+                        selected = currentScreen == Screen.Notes,
+                        onClick = { currentScreen = Screen.Notes },
+                        icon = { Text("📝") },
+                        label = { Text("Notes") }
+                    )
                 }
                 
                 when (currentScreen) {
@@ -63,6 +75,8 @@ fun App() {
                     Screen.Counter -> CounterScreen()
                     Screen.TodoList -> TodoListScreen()
                     Screen.Calculator -> CalculatorScreen()
+                    Screen.Timer -> TimerScreen()
+                    Screen.Notes -> NotesScreen()
                 }
             }
         }
@@ -74,5 +88,7 @@ sealed class Screen {
     object Counter : Screen()
     object TodoList : Screen()
     object Calculator : Screen()
+    object Timer : Screen()
+    object Notes : Screen()
 }
 

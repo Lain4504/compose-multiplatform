@@ -94,6 +94,8 @@ fun HomeScreen() {
                 Text("• Counter - Increment/Decrement demo")
                 Text("• Todo List - Task management")
                 Text("• Calculator - Basic calculations")
+                Text("• Timer/Stopwatch - Time tracking")
+                Text("• Notes - Colorful note taking")
                 Text("• Shared business logic across platforms")
             }
         }

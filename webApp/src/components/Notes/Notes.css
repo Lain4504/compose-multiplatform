@@ -1,0 +1,218 @@
+.notes-container {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #333;
+  margin: 1rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+.notes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.notes-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.add-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid white;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.notes-search {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-sizing: border-box;
+}
+
+.notes-empty {
+  text-align: center;
+  padding: 2rem;
+  color: white;
+  opacity: 0.8;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.note-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.note-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.note-content {
+  flex: 1;
+  margin-bottom: 0.5rem;
+}
+
+.note-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.note-text {
+  font-size: 0.9rem;
+  color: #666;
+  word-wrap: break-word;
+  max-height: 100px;
+  overflow: hidden;
+}
+
+.note-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.note-btn {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.note-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.color-picker {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.color-option {
+  width: 32px;
+  height: 32px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.color-option.selected {
+  border-color: #667eea;
+  border-width: 3px;
+}
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  color: #333;
+}
+
+.dialog-content h3 {
+  margin: 0 0 1rem 0;
+}
+
+.dialog-input,
+.dialog-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.dialog-textarea {
+  resize: vertical;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.dialog-btn {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.dialog-btn.cancel {
+  background: #ddd;
+  color: #333;
+}
+
+.dialog-btn.confirm {
+  background: #667eea;
+  color: white;
+}
+
+.dialog-btn:hover {
+  opacity: 0.8;
+}
+
