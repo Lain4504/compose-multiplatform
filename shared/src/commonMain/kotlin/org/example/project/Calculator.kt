@@ -2,6 +2,8 @@ package org.example.project
 
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 @OptIn(ExperimentalJsExport::class)
 @JsExport
@@ -18,12 +20,12 @@ class Calculator {
     }
     
     fun power(base: Double, exponent: Double): Double {
-        return kotlin.math.pow(base, exponent)
+        return base.pow(exponent)
     }
     
     fun sqrt(value: Double): Double {
         if (value < 0) throw IllegalArgumentException("Cannot calculate square root of negative number")
-        return kotlin.math.sqrt(value)
+        return sqrt(value)
     }
     
     fun calculate(expression: String): Double {

@@ -8,8 +8,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-@OptIn(ExperimentalJsExport::class)
-@JsExport
 interface TaskRepository {
     val tasks: StateFlow<List<TaskDto>>
     val isLoading: StateFlow<Boolean>
@@ -23,8 +21,6 @@ interface TaskRepository {
     suspend fun toggleTask(id: String): Result<TaskDto>
 }
 
-@OptIn(ExperimentalJsExport::class)
-@JsExport
 class TaskRepositoryImpl(
     private val taskApi: TaskApi
 ) : TaskRepository {

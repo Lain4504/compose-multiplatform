@@ -67,7 +67,16 @@ class NotesManager {
     }
     
     fun deleteNote(id: String): Boolean {
-        return notes.removeIf { note -> note.id == id }
+        val iterator = notes.iterator()
+        var removed = false
+        while (iterator.hasNext()) {
+            val note = iterator.next()
+            if (note.id == id) {
+                iterator.remove()
+                removed = true
+            }
+        }
+        return removed
     }
     
     fun getNote(id: String): Note? {

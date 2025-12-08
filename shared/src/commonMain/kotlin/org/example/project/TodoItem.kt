@@ -46,7 +46,16 @@ class TodoManager {
     }
     
     fun removeTodo(id: String): Boolean {
-        return todos.removeIf { todo -> todo.id == id }
+        val iterator = todos.iterator()
+        var removed = false
+        while (iterator.hasNext()) {
+            val todo = iterator.next()
+            if (todo.id == id) {
+                iterator.remove()
+                removed = true
+            }
+        }
+        return removed
     }
     
     fun toggleTodo(id: String): TodoItem? {

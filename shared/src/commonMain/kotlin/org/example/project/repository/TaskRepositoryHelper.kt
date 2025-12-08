@@ -7,9 +7,9 @@ import org.example.project.api.TaskDto
 
 /**
  * Helper class to expose repository functionality in a way that's easier to use from Swift/JS
+ * Note: Suspend functions cannot be exported to JavaScript, so this class is not @JsExport
+ * For JS usage, use coroutines directly or create non-suspend wrappers
  */
-@OptIn(ExperimentalJsExport::class)
-@JsExport
 class TaskRepositoryHelper(
     private val repository: TaskRepository
 ) {
