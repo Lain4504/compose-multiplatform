@@ -81,7 +81,7 @@ export function Notes() {
               const updatedNotes = prevNotes.map(note => 
                 note.id === editingNote.id ? updated : note
               );
-              return updatedNotes.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+              return updatedNotes.sort((a, b) => Number(b.updatedAt || 0) - Number(a.updatedAt || 0));
             });
           } else {
             refreshNotes();
@@ -93,7 +93,7 @@ export function Notes() {
             // Add the note to state directly
             setNotes(prevNotes => {
               const newNotes = [...prevNotes, added];
-              return newNotes.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+              return newNotes.sort((a, b) => Number(b.updatedAt || 0) - Number(a.updatedAt || 0));
             });
           } else {
             refreshNotes();
